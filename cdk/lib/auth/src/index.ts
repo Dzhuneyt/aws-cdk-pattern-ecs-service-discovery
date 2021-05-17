@@ -1,21 +1,30 @@
 import {Request, Response} from "express";
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 const express = require('express');
 const app = express();
 const PORT = 80;
 
-app.get('/one/:any', (req: Request, res: Response) => {
-    res.send('Hello from Microservice 1');
-});
-app.get('/two/:any', (req: Request, res: Response) => {
-    console.log(`http://service-2.myapp${req.path}`);
-    axios.get(`http://service-2.myapp${req.path}`).then(value => {
+app.get('/login', (req: Request, res: Response) => {
+    axios.get(`http://token.myapp/token`, {
+        params: {
+            username: "something",
+            password: "secret",
+        },
+    }).then((value: AxiosResponse<any>) => {
         console.log(value.data);
+        res.json({
+            success: true,
+            accessToken: value.data,
+        })
         res.send('Success');
-    }).catch(reason => {
+    }).catch((reason: any) => {
         console.error(reason);
-        res.send('Fail');
+        res
+            .json({
+                success: false,
+            })
+            .sendStatus(400);
     });
 
     // request(`http://service2.myapp/${req.path}`,
