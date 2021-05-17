@@ -14,6 +14,7 @@ import {RetentionDays} from "@aws-cdk/aws-logs";
 import {Port} from "@aws-cdk/aws-ec2";
 
 export class AuthMicroservice extends Construct {
+    service: FargateService;
 
     constructor(scope: Construct, id: string, private props: {
         cluster: ICluster,
@@ -41,7 +42,7 @@ export class AuthMicroservice extends Construct {
             }),
         });
 
-        const service = new FargateService(this, 'FargateService', {
+        this.service = new FargateService(this, 'FargateService', {
             cluster: props.cluster,
             taskDefinition,
             assignPublicIp: true,
@@ -65,10 +66,10 @@ export class AuthMicroservice extends Construct {
             dnsTtl: Duration.seconds(1),
             name: 'auth',
         });
-        service.associateCloudMapService({
+        this.service.associateCloudMapService({
             service: cloudMapService,
         })
 
-        service.connections.allowFromAnyIpv4(Port.allTraffic());
+        this.service.connections.allowFromAnyIpv4(Port.allTraffic());
     }
 }

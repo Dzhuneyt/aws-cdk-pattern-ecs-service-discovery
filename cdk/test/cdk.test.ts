@@ -1,6 +1,6 @@
 import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
-import * as Cdk from '../lib/ecs-microservice-discovery-stack';
+import * as Cdk from '../lib/EcsMicroserviceDiscoveryStack';
 
 test('Empty Stack', () => {
     const app = new cdk.App();

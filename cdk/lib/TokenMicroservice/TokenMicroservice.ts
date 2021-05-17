@@ -26,7 +26,6 @@ export class TokenMicroservice extends Construct {
             cpu: 256,
         });
         taskDefinition.addContainer("web", {
-            // Use an image from DockerHub
             image: ContainerImage.fromAsset(path.resolve(__dirname, "./../../../microservices/token")),
             portMappings: [
                 {
